@@ -1,5 +1,6 @@
 package com.lahmamsi.expensestrackerapi.expenses;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.lahmamsi.expensestrackerapi.exceptions.CategoryNotFoundException;
@@ -42,6 +43,36 @@ public class ExpensesService {
 	public Expenses getExpenses(long userId, long expensesId) throws ExpensesNotFoundException {
 		// TODO Auto-generated method stub
 		return expensesRepo.findByIdAndUserId(expensesId, userId).orElseThrow(() -> new ExpensesNotFoundException(" "));
+	}
+
+	public void deleteExpences(long userId, long expensesId) {
+		// TODO Auto-generated method stub
+		expensesRepo.deleteByIdAndUserId(expensesId, userId);
+		
+	}
+
+	public Expenses updateExpences(long expensesId, ExpensesDto expensesDto) throws ExpensesNotFoundException, CategoryNotFoundException, UserNotFoundException {
+		// TODO Auto-generated method stub
+		Expenses expenses = expensesRepo.findById(expensesId).orElseThrow(() -> new ExpensesNotFoundException(" "));
+		expenses.setAmount(expensesDto.getAmount());
+		expenses.setDescription(expensesDto.getDescription());
+		expenses.setDate(expensesDto.getDate());
+		expenses.setCategory(categoryRepo
+							.findById(expensesDto.getCategoryId())
+							.orElseThrow(() -> new CategoryNotFoundException(" ")));
+		expenses.setUser(userRepo
+							.findById(expensesDto.getUserId())
+							.orElseThrow(() -> new UserNotFoundException(" ")));
+		
+		
+		return expensesRepo.save(expenses);
+		
+	}
+
+	public List<ExpensesReport> getExpensesReport(long userId, LocalDate startDate, LocalDate endDate) {
+		// TODO Auto-generated method stub
+		//return expensesRepo.getExpenseReport(userId, startDate, endDate);
+		return null;
 	}
 	
 	
