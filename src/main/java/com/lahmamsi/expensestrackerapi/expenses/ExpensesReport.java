@@ -1,44 +1,51 @@
 package com.lahmamsi.expensestrackerapi.expenses;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ExpensesReport {
 
-	private String category;
-	private double totalAmount;
-	private double percentage;
+	private Map<String, AmountDto> expensesReportMap;
+	private double total;
 
-	public ExpensesReport(String category, double totalAmount, double percentage) {
-		super();
-		this.category = category;
-		this.totalAmount = totalAmount;
-		this.percentage = percentage;
-	}
 
-	public ExpensesReport() {
+	public ExpensesReport(Map<String, AmountDto> expensesReportMap, double total) {
 		// TODO Auto-generated constructor stub
+		this.expensesReportMap = expensesReportMap;
+		this.total = total;
+		
+	}
+	
+	
+	
+	
+	public Map<String, AmountDto> getExpensesReportMap() {
+		return expensesReportMap;
 	}
 
-	public String getCategory() {
-		return category;
+
+
+
+	public double getTotal() {
+		return total;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
 
-	public double getTotalAmount() {
-		return totalAmount;
-	}
 
-	public void setTotalAmount(double totalAmount) {
-		this.totalAmount = totalAmount;
-	}
 
-	public double getPercentage() {
-		return percentage;
+	public static ExpensesReport of(Map<String, Double> expensesAmountByCategory, double total) {
+		
+		Map<String, AmountDto> expensesReportMap = new HashMap<String, AmountDto>();
+		
+		expensesAmountByCategory.forEach((category, amount) -> expensesReportMap.put(category, new AmountDto(amount, total)));
+		
+		return new ExpensesReport(expensesReportMap, total);
+		
+		
 	}
+	
+	
 
-	public void setPercentage(double percentage) {
-		this.percentage = percentage;
-	}
+	
 
 }

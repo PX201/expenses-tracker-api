@@ -1,13 +1,19 @@
 package com.lahmamsi.expensestrackerapi.expenses;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
 
 import com.lahmamsi.expensestrackerapi.exceptions.CategoryNotFoundException;
 import com.lahmamsi.expensestrackerapi.exceptions.ExpensesNotFoundException;
 import com.lahmamsi.expensestrackerapi.exceptions.UserNotFoundException;
 import com.lahmamsi.expensestrackerapi.user.UserRepository;
 
+@Service
 public class ExpensesService {
 
 	private ExpensesRepository expensesRepo;
@@ -69,10 +75,22 @@ public class ExpensesService {
 		
 	}
 
-	public List<ExpensesReport> getExpensesReport(long userId, LocalDate startDate, LocalDate endDate) {
-		// TODO Auto-generated method stub
-		//return expensesRepo.getExpenseReport(userId, startDate, endDate);
-		return null;
+	public ExpensesReport getExpensesReport(long userId, LocalDate startDate, LocalDate endDate) {
+		List<Expenses>  expensesList = new ArrayList<Expenses>();
+		expensesList = expensesRepo.getAllExpenses(userId, startDate, endDate);
+		double total = 0;
+		
+		Map<String, Double> expensesAmountByCategory = expensesList.stream()
+				.collect(
+						Collectors.groupingBy( e -> e.getCategory().getName() , Collectors.summingDouble(Expenses::getAmount) ));
+		
+		for(var e: expensesList) {
+			 
+			total+= e.getAmount();
+		}
+		
+		return ExpensesReport.of(expensesAmountByCategory, total);
+		
 	}
 	
 	

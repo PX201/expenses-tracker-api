@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "category")
 public class Category {
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,6 +24,11 @@ public class Category {
 	public Category(int id, String name) {
 		super();
 		this.id = id;
+
+	}
+
+	public Category(String name) {
+		// TODO Auto-generated constructor stub
 		this.name = name;
 	}
 
@@ -40,6 +46,11 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + "]";
 	}
 
 }

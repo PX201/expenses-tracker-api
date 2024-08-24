@@ -26,6 +26,14 @@ public class ExpensesDto {
 		this.date = date;
 		this.categoryId = categoryId;
 	}
+	
+	public ExpensesDto( double amount, String description, LocalDate date, int categoryId) {
+		super();
+		this.amount = amount;
+		this.description = description;
+		this.date = date;
+		this.categoryId = categoryId;
+	}
 
 	public long getUserId() {
 		return userId;
